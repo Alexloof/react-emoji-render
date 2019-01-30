@@ -8,6 +8,7 @@ import normalizeProtocol from "./normalizeProtocol";
 import unicodeToCodepoint from "./unicodeToCodepoint";
 import aliases from "../data/aliases";
 import asciiAliases from "../data/asciiAliases";
+import ReactHtmlParser from "react-html-parser";
 
 const asciiAliasesRegex = asciiRegex();
 const unicodeEmojiRegex = emojiRegex();
@@ -90,6 +91,17 @@ export function toArray(text, options = {}) {
   );
 }
 
+const parseMentionsInText = text => {
+  const regex = /\B@\[@[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+]\(\w+\)/g
+  const mentionText = text.replace(regex, match => {
+    console.log({ match });
+    const name = match.replace(/(^.*\[|\].*$)/g, "");
+    console.log({ name });
+    return <span class="mention-name">name</span>;
+  });
+  return ReactHtmlParser(mentionText);
+};
+
 export default function Emoji(
   { text, onlyEmojiClassName, options = {}, className, ...rest }
 ) {
@@ -110,7 +122,7 @@ export default function Emoji(
 
   return (
     <span {...rest} className={classes}>
-      {output}
+      {parseMentionsInText(output)}
     </span>
   );
 }
