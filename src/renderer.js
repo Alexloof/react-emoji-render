@@ -83,27 +83,18 @@ export function toArray(text, options = {}) {
   }
   const regex = /\B@\[@[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+]\(\w+\)/g;
 
-  return replace(
+  const emojiText = replace(
     text
-      .replace(regex, match => {
-        const name = match.replace(/(^.*\[|\].*$)/g, "");
-        return `<span class="mention-name">${name}</span>`;
-      })
       .replace(asciiAliasesRegex, replaceAsciiAliases)
       .replace(aliasesRegex, replaceAliases),
     unicodeEmojiRegex,
     replaceUnicodeEmoji
   );
-}
-
-const parseMentionsInText = text => {
-  const regex = /\B@\[@[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+]\(\w+\)/g
-  const mentionText = text.replace(regex, match => {
+  return emojiText.replace(regex, match => {
     const name = match.replace(/(^.*\[|\].*$)/g, "");
-    return <span class="mention-name">{name}</span>;
+    return `<span class="mention-name">${name}</span>`;
   });
-  return ReactHtmlParser(mentionText);
-};
+}
 
 export default function Emoji(
   { text, onlyEmojiClassName, options = {}, className, ...rest }
