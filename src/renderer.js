@@ -81,11 +81,16 @@ export function toArray(text, options = {}) {
   function replaceAliases(...match) {
     return aliases[match[1]] || match[0];
   }
+  const regex = /\B@\[@[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+]\(\w+\)/g;
 
   return replace(
     text
       .replace(asciiAliasesRegex, replaceAsciiAliases)
-      .replace(aliasesRegex, replaceAliases),
+      .replace(aliasesRegex, replaceAliases)
+      .replace(regex, match => {
+        const name = match.replace(/(^.*\[|\].*$)/g, "");
+        return <span class="mention-name">{name}</span>;
+      }),
     unicodeEmojiRegex,
     replaceUnicodeEmoji
   );
@@ -120,7 +125,7 @@ export default function Emoji(
 
   return (
     <span {...rest} className={classes}>
-      <p>{parseMentionsInText(output)}</p>
+      {ReactHtmlParser(output)}
     </span>
   );
 }
