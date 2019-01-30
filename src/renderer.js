@@ -92,7 +92,7 @@ export function toArray(text, options = {}) {
   );
   return emojiText.join(" ").replace(regex, match => {
     const name = match.replace(/(^.*\[|\].*$)/g, "");
-    return `<span class="mention-name">${name}</span>`;
+    return ReactHtmlParser(`<span class="mention-name">${name}</span>`);
   });
 }
 
@@ -116,7 +116,7 @@ export default function Emoji(
 
   return (
     <span {...rest} className={classes}>
-      {ReactHtmlParser(output)}
+      {output}
     </span>
   );
 }
