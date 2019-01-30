@@ -89,7 +89,7 @@ export function toArray(text, options = {}) {
       .replace(aliasesRegex, replaceAliases)
       .replace(regex, match => {
         const name = match.replace(/(^.*\[|\].*$)/g, "");
-        return <span class="mention-name">{name}</span>;
+        return `<span class="mention-name">${name}</span>`;
       }),
     unicodeEmojiRegex,
     replaceUnicodeEmoji
