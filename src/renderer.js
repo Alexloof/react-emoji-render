@@ -94,10 +94,8 @@ export function toArray(text, options = {}) {
 const parseMentionsInText = text => {
   const regex = /\B@\[@[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+]\(\w+\)/g
   const mentionText = text.replace(regex, match => {
-    console.log({ match });
     const name = match.replace(/(^.*\[|\].*$)/g, "");
-    console.log({ name });
-    return <span class="mention-name">name</span>;
+    return <span class="mention-name">{name}</span>;
   });
   return ReactHtmlParser(mentionText);
 };
@@ -122,7 +120,7 @@ export default function Emoji(
 
   return (
     <span {...rest} className={classes}>
-      {parseMentionsInText(output)}
+      <p>{parseMentionsInText(output)}</p>
     </span>
   );
 }
