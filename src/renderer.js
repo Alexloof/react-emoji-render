@@ -90,7 +90,7 @@ export function toArray(text, options = {}) {
     unicodeEmojiRegex,
     replaceUnicodeEmoji
   );
-  return emojiText.replace(regex, match => {
+  return emojiText.join(" ").replace(regex, match => {
     const name = match.replace(/(^.*\[|\].*$)/g, "");
     return `<span class="mention-name">${name}</span>`;
   });
