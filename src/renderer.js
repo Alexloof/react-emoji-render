@@ -86,14 +86,15 @@ export function toArray(text, options = {}) {
   const emojiText = replace(
     text
       .replace(asciiAliasesRegex, replaceAsciiAliases)
-      .replace(aliasesRegex, replaceAliases),
+      .replace(aliasesRegex, replaceAliases)
+      .replace(regex, match => {
+        const name = match.replace(/(^.*\[|\].*$)/g, "");
+        return ReactHtmlParser(`<span class="mention-name">${name}</span>`);
+      }),
     unicodeEmojiRegex,
     replaceUnicodeEmoji
   );
-  return emojiText.join(" ").replace(regex, match => {
-    const name = match.replace(/(^.*\[|\].*$)/g, "");
-    return ReactHtmlParser(`<span class="mention-name">${name}</span>`);
-  });
+  return emojiText;
 }
 
 export default function Emoji(
