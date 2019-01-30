@@ -85,12 +85,12 @@ export function toArray(text, options = {}) {
 
   return replace(
     text
-      .replace(asciiAliasesRegex, replaceAsciiAliases)
-      .replace(aliasesRegex, replaceAliases)
       .replace(regex, match => {
         const name = match.replace(/(^.*\[|\].*$)/g, "");
         return `<span class="mention-name">${name}</span>`;
-      }),
+      })
+      .replace(asciiAliasesRegex, replaceAsciiAliases)
+      .replace(aliasesRegex, replaceAliases),
     unicodeEmojiRegex,
     replaceUnicodeEmoji
   );
